@@ -9,14 +9,17 @@ export const fetchBanks = createAsyncThunk('banks/fetchBanks', async () => {
 
 // Add a new bank
 export const addBank = createAsyncThunk('banks/addBank', async (bankData) => {
+  console.log(bankData);
   const response = await axios.post('https://plkzmn5x-3011.inc1.devtunnels.ms/api/bank', bankData);
-  return response.data;
+  console.log(response.data);
+  return response.data.bankAdd;
 });
 
 // Update a bank
 export const updateBank = createAsyncThunk('banks/updateBank', async ({ id, bankData }) => {
   const response = await axios.put(`https://plkzmn5x-3011.inc1.devtunnels.ms/api/bank/${id}`, bankData);
-  return response.data;
+  console.log(response.data);
+  return response.data.update;
 });
 
 // Delete a bank
@@ -49,15 +52,55 @@ const bankSlice = createSlice({
       })
       // Add Bank
       .addCase(addBank.fulfilled, (state, action) => {
+        
         state.banks.push(action.payload);
+        console.log(state.banks);
       })
       // Update Bank
+      // .addCase(updateBank.fulfilled, (state, action) => {
+      //   console.log(JSON.parse(JSON.stringify(action.payload)));
+      //  console.log(JSON.parse(JSON.stringify([...state.banks])));
+
+      //   const index = state.banks.findIndex((bank) => {
+      //     console.log(bank);
+      //     return bank.id === action.payload.id
+      //   });
+      //   console.log(index);
+      //   if (index !== -1) {
+      //     state.banks[index] = action.payload;
+      //   }
+      // })
+
+
+
       .addCase(updateBank.fulfilled, (state, action) => {
-        const index = state.banks.findIndex((bank) => bank.id === action.payload.id);
+        console.log("Action Payload:", JSON.parse(JSON.stringify(action.payload)));
+        console.log("State Banks:", JSON.parse(JSON.stringify(state.banks)));
+      
+        const index = state.banks.findIndex((bank) => {
+          console.log("Bank ID:", bank.id, "Type:", typeof bank.id);
+          console.log("Payload ID:", action.payload.id, "Type:", typeof action.payload.id);
+          return bank.id.toString() === action.payload.id.toString(); // Ensure same type
+        });
+      
+        console.log("Index:", index);
+      
         if (index !== -1) {
           state.banks[index] = action.payload;
+        } else {
+          console.log("Bank not found in state.banks");
         }
       })
+
+
+
+
+
+
+
+
+
+
       // Delete Bank
       .addCase(deleteBank.fulfilled, (state, action) => {
         state.banks = state.banks.filter((bank) => bank.id !== action.payload);

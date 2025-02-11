@@ -34,7 +34,8 @@ const BankPage = () => {
     console.log(banks);
     e.preventDefault();
     if (editId) {
-      await dispatch(updateBank({ id: editId, bankData: formData }));
+      const {id,...rest}=formData;
+      await dispatch(updateBank({ id: editId, bankData: rest }));
     } else {
       await dispatch(addBank(formData));
     }
@@ -179,14 +180,14 @@ const BankPage = () => {
         <tbody>
           {banks.map((bank) => (
             <tr key={bank.id} className="border">
-              <td className="p-2 border">{bank.bankName}</td>
-              <td className="p-2 border">{bank.ifscCode}</td>
-              <td className="p-2 border">{bank.branchName}</td>
-              <td className="p-2 border">{bank.AC_Number}</td>
-              <td className="p-2 border">{bank.ACH_Name}</td>
-              <td className="p-2 border">{bank.mobileno}</td>
-              <td className="p-2 border">{bank.balance}</td>
-              <td className="p-2 border">
+              <td className="p-2 border text-center">{bank.bankName}</td>
+              <td className="p-2 border text-center">{bank.ifscCode}</td>
+              <td className="p-2 border text-center">{bank.branchName}</td>
+              <td className="p-2 border text-center">{bank.AC_Number}</td>
+              <td className="p-2 border text-center">{bank.ACH_Name}</td>
+              <td className="p-2 border text-center">{bank.mobileno}</td>
+              <td className="p-2 border text-center">{bank.balance}</td>
+              <td className="p-2 border text-center">
                 <button
                   onClick={() => handleEdit(bank)}
                   className="bg-yellow-500 text-white px-2 py-1 rounded mr-2"

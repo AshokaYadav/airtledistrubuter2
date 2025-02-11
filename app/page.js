@@ -9,8 +9,8 @@ import { redirect } from 'next/navigation';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state);
-  console.log(user);
+  // const user = useSelector((state) => state);
+  // console.log(user);
   
 
   // Check if the user exists in localStorage on mount and initialize Redux state

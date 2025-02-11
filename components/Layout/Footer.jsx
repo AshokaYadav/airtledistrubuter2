@@ -1,9 +1,9 @@
+// components/Footer.js
+
 const Footer = () => {
   return (
-    <footer className="bg-red-600 text-white p-4 mt-auto">
-      <div className="container mx-auto text-center">
-        <p>&copy; 2025 Airtel Distributor Application. All rights reserved.</p>
-      </div>
+    <footer className="bg-gray-800 text-white p-4 text-center">
+      <p>&copy; {new Date().getFullYear()} My App. All rights reserved.</p>
     </footer>
   );
 };
