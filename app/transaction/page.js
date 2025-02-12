@@ -6,7 +6,7 @@ import TransactionTable from '@/components/Transaction/TransactionTable';
 import TransactionForm from '@/components/Transaction/TransactionForm';
 import { fetchBanks } from '../redux/slices/bankSlice';
 import { fetchMasterData } from '../redux/slices/masterSlice';
-import { fetchTransactions } from '../redux/slices/transactionSlice';
+import { fetchTransactions, uploadExcelFile } from '../redux/slices/transactionSlice';
 // import TransactionForm from '../components/TransactionForm';
 // import TransactionTable from '../components/TransactionTable';
 
@@ -25,10 +25,27 @@ const HomePage = () => {
     setEditData(data);
     setIsModalOpen(true);
   };
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('file got seleceted brother...!')
+      dispatch(uploadExcelFile(file));
+    }
+  };
 
   return (
     <div className="p-6">
-      <div className="flex justify-end m-4">
+      <div className="flex justify-between m-4">
+      <input
+          type="file"
+          id="file-upload"
+          style={{ display: 'none' }}
+          onChange={handleFileUpload}
+          accept=".xlsx, .xls"
+        />
+        <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
+          Upload Excel
+        </label>
         <button
           onClick={() => {
             setEditData(null);

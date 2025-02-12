@@ -1,6 +1,6 @@
 'use client'
 import { addTransaction, updateTransaction } from '@/app/redux/slices/transactionSlice';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 const TransactionForm = ({ isOpen, onClose, editData }) => {
@@ -12,8 +12,14 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
       utrNo: '',
       remark: '',
       amount: '',
+      shopId:'',
+      type:'Credit'
     }
   );
+
+  useEffect(()=>{
+    console.log(formData);
+  },[formData])
 
   const {
     banks: { banks, status: banksStatus, error },
@@ -30,7 +36,19 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
     if (editData) {
       dispatch(updateTransaction({ ...formData, id: editData.id }));
     } else {
-      dispatch(addTransaction(formData));
+      const selectedBank = banks.find(bank => bank.id === formData.BankId);
+      const bankName = selectedBank ? selectedBank.bankName : ''; // fallback to empty string if not found
+  
+      // Find the corresponding name from the data array
+      const selectedName = data.find(item => item.id === formData.distributeId);
+      const name = selectedName ? selectedName.name : ''; // fallback to empty string if not found
+      const updatedFormData = {
+        ...formData,
+        bankName: bankName,
+        name: name,
+      };
+  
+      dispatch(addTransaction(updatedFormData));
     }
     onClose();
   };
@@ -86,6 +104,23 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
             </select>
           </div>
 
+          <div>
+            <label htmlFor="shopId" className="block mb-2 text-sm font-medium text-gray-700">
+              Shop Id
+            </label>
+            <input
+              type="text"
+              id="shopId"
+              name="shopId"
+              value={formData.shopId}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter Shop Id"
+            />
+          </div>
+
+
+
           {/* UTR No Input */}
           <div>
             <label htmlFor="utrNo" className="block mb-2 text-sm font-medium text-gray-700">
@@ -118,7 +153,38 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
             />
           </div>
 
+
+
           {/* Amount Input */}
+          <div>
+            <label htmlFor="type" className="block mb-2 text-sm font-medium text-gray-700">
+              Select Type
+            </label>
+            <select
+              id="type"
+              name="type"
+              value={formData.type}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+            >
+              <option value="">Select Distributor</option>
+                <option  value="Credit">
+                  Credit 
+                </option>
+                <option  value="Debit">
+                  Debit
+                </option>
+                <option  value="Other">
+                  Other
+                </option>
+          
+            </select>
+          </div>
+
+
+
+
+
           <div>
             <label htmlFor="amount" className="block mb-2 text-sm font-medium text-gray-700">
               Amount
@@ -139,7 +205,7 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
             <button
               type="submit"
               className="bg-blue-500 text-white p-2 rounded"
-              disabled={!formData.selectedBank || !formData.selectedData || !formData.utrNo || !formData.remark || !formData.amount}
+              // disabled={!formData.selectedBank || !formData.selectedData || !formData.utrNo || !formData.remark || !formData.amount}
             >
               {editData ? 'Update' : 'Submit'}
             </button>

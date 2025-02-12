@@ -12,13 +12,14 @@ export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions
 // Add transaction
 export const addTransaction = createAsyncThunk('transaction/addTransaction', async (data) => {
   const response = await axios.post(API_URL, data);
-  return response.data;
+  console.log(response.data.data);
+  return response.data.data;
 });
 
 // Update transaction
 export const updateTransaction = createAsyncThunk('transaction/updateTransaction', async (data) => {
   const response = await axios.put(`${API_URL}/${data.id}`, data);
-  return response.data;
+  return response.data.update;
 });
 
 // Delete transaction
@@ -27,11 +28,37 @@ export const deleteTransaction = createAsyncThunk('transaction/deleteTransaction
   return id;
 });
 
+// Upload Excel file
+export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', async (file, { rejectWithValue }) => {
+  alert('heelo ')
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    console.log(file);
+
+    const response = await axios.post(`${API_URL}/upload`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    console.log(response.data);
+
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
+  }
+});
+
+
+
+
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState: {
     transactions: [],
     status: 'idle',
+    uploadStatus: 'idle', // Add uploadStatus for Excel upload
     error: null,
   },
   reducers: {},
@@ -52,13 +79,26 @@ const transactionSlice = createSlice({
         state.transactions.push(action.payload);
       })
       .addCase(updateTransaction.fulfilled, (state, action) => {
-        const index = state.transactions.findIndex((t) => t.id === action.payload.id);
+        const index = state.transactions.findIndex((t) => t.id.toString() === action.payload.id.toString());
         if (index !== -1) {
           state.transactions[index] = action.payload;
         }
       })
       .addCase(deleteTransaction.fulfilled, (state, action) => {
         state.transactions = state.transactions.filter((t) => t.id !== action.payload);
+      })
+      // Upload Excel file
+      .addCase(uploadExcelFile.pending, (state) => {
+        state.uploadStatus = 'loading';
+      })
+      .addCase(uploadExcelFile.fulfilled, (state) => {
+        state.uploadStatus = 'succeeded';
+        // Optionally, you can refetch transactions after successful upload
+        state.status = 'idle'; // Reset status to refetch transactions
+      })
+      .addCase(uploadExcelFile.rejected, (state, action) => {
+        state.uploadStatus = 'failed';
+        state.error = action.payload;
       });
   },
 });
