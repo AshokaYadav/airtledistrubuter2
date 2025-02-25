@@ -1,10 +1,7 @@
 'use client'
 import MasterForm from '@/components/Master/MasterForm';
 import MasterTable from '@/components/Master/MasterTable';
-// pages/Home.js
 import { useState } from 'react';
-// import MasterForm from '../components/MasterForm';
-// import MasterTable from '../components/MasterTable';
 
 const Home = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);

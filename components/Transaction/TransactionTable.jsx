@@ -17,10 +17,12 @@ const TransactionTable = ({ onEdit }) => {
         <thead>
           <tr>
             <th className="p-2 border">Bank</th>
-            <th className="p-2 border">Distrubutor</th>
             <th className="p-2 border">UTR No</th>
             <th className="p-2 border">Remark</th>
             <th className="p-2 border">Amount</th>
+            <th className="p-2 border">After Balance</th>
+            <th className="p-2 border">Before Balance</th>
+            <th className="p-2 border">Distrubutor</th>
             <th className="p-2 border">Actions</th>
           </tr>
         </thead>
@@ -28,10 +30,12 @@ const TransactionTable = ({ onEdit }) => {
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
               <td className="p-2 border text-center">{transaction.Bank.bankName}</td>
-              <td className="p-2 border  text-center">{transaction.Master.name}</td>
               <td className="p-2 border  text-center">{transaction.utrNo}</td>
               <td className="p-2 border  text-center">{transaction.remark}</td>
               <td className="p-2 border  text-center">{transaction.amount}</td>
+              <td className="p-2 border  text-center">{transaction.AfterBalances}</td>
+              <td className="p-2 border  text-center">{transaction.BeforeBalances}</td>
+              <td className="p-2 border  text-center">{transaction.Master?.name}</td>
               <td className="p-2 border  text-center">
                 <button
                   onClick={() => onEdit(transaction)}

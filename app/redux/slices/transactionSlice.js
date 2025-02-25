@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://plkzmn5x-3011.inc1.devtunnels.ms/api/bank-transaction';
+const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/bank-transaction';
 
 // Fetch transactions
 export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions', async () => {

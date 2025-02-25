@@ -1,25 +1,26 @@
-// features/masterSlice.js
+// features/collectorSlice.js
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/master';
+const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/collector';
 
 // Fetch all data
-export const fetchMasterData = createAsyncThunk('master/fetchMasterData', async () => {
+export const fetchcollectorData = createAsyncThunk('collector/fetchcollectorData', async () => {
   const response = await axios.get(API_URL);
+  console.log(response.data);
   return response.data;
 });
 
 // Add new data
-export const addMasterData = createAsyncThunk('master/addMasterData', async (data) => {
+export const addcollectorData = createAsyncThunk('collector/addcollectorData', async (data) => {
     console.log(data);
   const response = await axios.post(API_URL, data);
   console.log(response.data)
-  return response.data.Data;
+  return response.data.createCollector;
 });
 
 // Update data
-export const updateMasterData = createAsyncThunk('master/updateMasterData', async (data) => {
+export const updatecollectorData = createAsyncThunk('collector/updatecollectorData', async (data) => {
     const {id,...rest}=data;
   const response = await axios.put(`${API_URL}/${data.id}`, rest);
   console.log(response.data);
@@ -27,7 +28,7 @@ export const updateMasterData = createAsyncThunk('master/updateMasterData', asyn
 });
 
 // Delete data
-export const deleteMasterData = createAsyncThunk('master/deleteMasterData', async (id) => {
+export const deletecollectorData = createAsyncThunk('collector/deletecollectorData', async (id) => {
   await axios.delete(`${API_URL}/${id}`);
   return id;
 });
@@ -35,8 +36,8 @@ export const deleteMasterData = createAsyncThunk('master/deleteMasterData', asyn
 
 
 
-const masterSlice = createSlice({
-  name: 'master',
+const collectorSlice = createSlice({
+  name: 'collector',
   initialState: {
     data: [],
     status: 'idle',
@@ -45,30 +46,30 @@ const masterSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchMasterData.pending, (state) => {
+      .addCase(fetchcollectorData.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(fetchMasterData.fulfilled, (state, action) => {
+      .addCase(fetchcollectorData.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.data = action.payload;
       })
-      .addCase(fetchMasterData.rejected, (state, action) => {
+      .addCase(fetchcollectorData.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
-      .addCase(addMasterData.fulfilled, (state, action) => {
+      .addCase(addcollectorData.fulfilled, (state, action) => {
         state.data.push(action.payload);
       })
-      .addCase(updateMasterData.fulfilled, (state, action) => {
+      .addCase(updatecollectorData.fulfilled, (state, action) => {
         const index = state.data.findIndex((item) => item.id.toString() === action.payload.id.toString());
         if (index !== -1) {
           state.data[index] = action.payload;
         }
       })
-      .addCase(deleteMasterData.fulfilled, (state, action) => {
+      .addCase(deletecollectorData.fulfilled, (state, action) => {
         state.data = state.data.filter((item) => item.id !== action.payload);
       });
   },
 });
 
-export default masterSlice.reducer;
+export default collectorSlice.reducer;
