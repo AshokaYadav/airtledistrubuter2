@@ -52,6 +52,9 @@ const Sidebar = ({ isSidebarOpen }) => {
           <Link href="/collector" className="block hover:bg-gray-700 p-2 rounded">
             Collector
           </Link>
+          <Link href="/shops" className="block hover:bg-gray-700 p-2 rounded">
+            Shops
+          </Link>
         </nav>
       </div>
     </div>

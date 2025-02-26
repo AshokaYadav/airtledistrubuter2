@@ -1,9 +1,10 @@
 'use client';
 
-import { loginUser } from '@/app/redux/slices/authSlice';
+
 import { redirect } from 'next/navigation';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { loginUser } from '../app/redux/slices/authSlice';
 
 export default function LoginForm() {
   const [password, setPassword] = useState('');
@@ -13,6 +14,7 @@ export default function LoginForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(loginUser({ mobileno, password })); // Send mobileno and password for login
     redirect('/dashboard');
   };

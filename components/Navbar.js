@@ -1,7 +1,8 @@
 'use client';
 
-import { logout } from '@/app/redux/slices/authSlice';
+
 import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../app/redux/slices/authSlice';
 
 export default function Navbar() {
   const dispatch = useDispatch();

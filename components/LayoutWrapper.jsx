@@ -3,7 +3,8 @@
 
 import { useState } from 'react';
 import { Provider } from 'react-redux';
-import { store } from '@/app/redux/store';
+// import { store } from '@/app/redux/store';
+import {store} from '../app/redux/store';
 import Header from './Layout/Header';
 import Sidebar from './Layout/Sidebar';
 import Footer from './Layout/Footer';
@@ -22,6 +23,7 @@ const LayoutWrapper = ({ children }) => {
   const transitionDuration = '0.3s'; // Transition duration for sidebar and main content
 
   return (
+
     <Provider store={store}>
       <div className="min-h-screen flex flex-col">
         {/* Header */}
