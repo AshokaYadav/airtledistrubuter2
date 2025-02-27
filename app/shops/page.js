@@ -50,7 +50,7 @@ const Shops = () => {
         <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
           Upload Excel
         </label>
-        <button
+        <button   
           onClick={() => {
             setEditData(null);
             setIsModalOpen(true);

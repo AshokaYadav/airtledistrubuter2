@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/bank-transaction';
 
+
 // Fetch transactions
 export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions', async () => {
   const response = await axios.get(API_URL);
@@ -29,22 +30,24 @@ export const deleteTransaction = createAsyncThunk('transaction/deleteTransaction
 });
 
 // Upload Excel file
-export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', async (file, { rejectWithValue }) => {
+export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', async (file, { dispatch,rejectWithValue }) => {
   alert('heelo ')
   try {
     const formData = new FormData();
     formData.append('file', file);
     console.log(file);
 
-    const response = await axios.post(`${API_URL}/upload`, formData, {
+    const response = await axios.post(`https://plkzmn5x-3012.inc1.devtunnels.ms/api/lapu-collector/upload/data`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
 
-    console.log(response.data);
+    
 
-    return response.data;
+    console.log(response.data);
+    dispatch(fetchTransactions());
+    return;
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -91,7 +94,7 @@ const transactionSlice = createSlice({
       .addCase(uploadExcelFile.pending, (state) => {
         state.uploadStatus = 'loading';
       })
-      .addCase(uploadExcelFile.fulfilled, (state) => {
+      .addCase(uploadExcelFile.fulfilled, (state,action) => {
         state.uploadStatus = 'succeeded';
         // Optionally, you can refetch transactions after successful upload
         state.status = 'idle'; // Reset status to refetch transactions

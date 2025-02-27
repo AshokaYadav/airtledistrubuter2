@@ -58,9 +58,12 @@ export const uploadExcelFile = createAsyncThunk('shop/uploadExcelFile', async (f
       },
     });
 
-    console.log(response.data);
+    console.log(response);
+    console.log(response.data.data);
 
-    return response.data;
+    return response.data.data
+
+    // return response.data;
   } catch (error) {
     return rejectWithValue(error.response.data);
   }
@@ -108,10 +111,13 @@ const shopSlice = createSlice({
       .addCase(uploadExcelFile.pending, (state) => {
         state.uploadStatus = 'loading';
       })
-      .addCase(uploadExcelFile.fulfilled, (state) => {
+      .addCase(uploadExcelFile.fulfilled, (state,action) => {
+        console.log(action);
+        state.shops.data=action.payload;
         state.uploadStatus = 'succeeded';
         // Optionally, you can refetch shops after successful upload
         state.status = 'idle'; // Reset status to refetch shops
+        
       })
       .addCase(uploadExcelFile.rejected, (state, action) => {
         state.uploadStatus = 'failed';
