@@ -6,7 +6,7 @@ export const loginUser = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post('https://plkzmn5x-3012.inc1.devtunnels.ms/api/admin/login', credentials);
+      const response = await axios.post('https://12flf535-3012.inc1.devtunnels.ms/api/admin/login', credentials);
       return response.data; // Assuming the API returns a token
     } catch (error) {
       return rejectWithValue(error.response.data);

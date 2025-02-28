@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/bank-transaction';
+const API_URL = 'https://12flf535-3012.inc1.devtunnels.ms/api/bank-transaction';
 
 
 // Fetch transactions
@@ -37,7 +37,7 @@ export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', a
     formData.append('file', file);
     console.log(file);
 
-    const response = await axios.post(`https://plkzmn5x-3012.inc1.devtunnels.ms/api/lapu-collector/upload/data`, formData, {
+    const response = await axios.post(`https://12flf535-3012.inc1.devtunnels.ms/api/lapu-collector/upload/data`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

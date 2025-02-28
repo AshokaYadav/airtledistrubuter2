@@ -2,7 +2,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://plkzmn5x-3012.inc1.devtunnels.ms/api/collector';
+const API_URL = 'https://12flf535-3012.inc1.devtunnels.ms/api/collector';
 
 // Fetch all data
 export const fetchcollectorData = createAsyncThunk('collector/fetchcollectorData', async () => {
