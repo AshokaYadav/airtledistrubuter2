@@ -1,18 +1,28 @@
-// components/Header.js
+'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
+import { useRef, useEffect } from 'react';
 
 const Header = ({ isSidebarOpen, toggleSidebar }) => {
-  const sidebarWidth = 256; // Sidebar width (can adjust if needed)
-  const transitionDuration = '0.3s'; // Transition duration for sidebar and main content
+  const headerRef = useRef(null);
+  const sidebarWidth = 256; // Sidebar width
+  const transitionDuration = '0.3s'; // Transition duration
+
+  // Get header height
+  useEffect(() => {
+    if (headerRef.current) {
+      const headerHeight = headerRef.current.offsetHeight;
+      document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+    }
+  }, []);
 
   return (
     <header
+      ref={headerRef}
       className="bg-blue-600 text-white p-4 flex justify-between items-center fixed w-full z-10"
       style={{
-        paddingLeft: isSidebarOpen ? `${sidebarWidth}px` : '0', // Adjust header's padding when sidebar is open
-        transition: `padding-left ${transitionDuration} ease`, // Smooth transition for header
+        paddingLeft: isSidebarOpen ? `${sidebarWidth}px` : '0',
+        transition: `padding-left ${transitionDuration} ease`,
       }}
     >
       <div className="flex items-center">

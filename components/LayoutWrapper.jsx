@@ -1,45 +1,54 @@
-'use client'
-// components/LayoutWrapper.js
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Provider } from 'react-redux';
-// import { store } from '@/app/redux/store';
-import {store} from '../app/redux/store';
+import { store } from '../app/redux/store';
 import Header from './Layout/Header';
 import Sidebar from './Layout/Sidebar';
 import Footer from './Layout/Footer';
-// import Header from './Header';
-// import Sidebar from './Sidebar';
-// import Footer from './Footer';
+import { usePathname } from 'next/navigation';
 
 const LayoutWrapper = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [userToken, setUserToken] = useState(null); // State to store the token
+  const pathname = usePathname();
+  const isLoginPage = pathname === '/login';
 
+  // Toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const sidebarWidth = 256; // Sidebar width (can adjust if needed)
-  const transitionDuration = '0.3s'; // Transition duration for sidebar and main content
+  // Check local storage for token on component mount
+  useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    setUserToken(token); // Set the token state
+  }, []);
 
+  // If it's the login page or no token exists, render only the Provider and children
+  if (isLoginPage || !userToken) {
+    return <Provider store={store}>{children}</Provider>;
+  }
+
+  // If token exists and it's not the login page, render the full layout
   return (
-
     <Provider store={store}>
       <div className="min-h-screen flex flex-col">
         {/* Header */}
         <Header isSidebarOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
         {/* Main Content Area */}
-        <div className="flex flex-1 mt-16"> {/* Add margin-top to account for fixed header */}
+        <div className="flex flex-1">
           {/* Sidebar */}
           <Sidebar isSidebarOpen={isSidebarOpen} />
 
           {/* Main Content */}
           <main
-            className="flex-1 p-4 bg-gray-100"
+            className="flex-1 bg-gray-100"
             style={{
-              paddingLeft: isSidebarOpen ? `${sidebarWidth}px` : '0', // Adjust main content's padding based on sidebar state
-              transition: `padding-left ${transitionDuration} ease`, // Smooth transition for main content
+              paddingLeft: isSidebarOpen ? '256px' : '0', // Adjust padding based on sidebar state
+              paddingTop: '64px', // Add padding-top to push content below the header
+              transition: 'padding-left 0.3s ease', // Smooth transition
             }}
           >
             {children}

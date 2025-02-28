@@ -1,9 +1,11 @@
+'use client';
+
 import Link from 'next/link';
-import { useState } from 'react'; // Import useState for managing dropdown state
+import { useState } from 'react';
 
 const Sidebar = ({ isSidebarOpen }) => {
-  const sidebarWidth = 256; // Sidebar width (can adjust if needed)
-  const transitionDuration = '0.3s'; // Transition duration for sidebar
+  const sidebarWidth = 256; // Sidebar width
+  const transitionDuration = '0.3s'; // Transition duration
   const [isBankDropdownOpen, setIsBankDropdownOpen] = useState(false); // State for dropdown
 
   // Toggle dropdown visibility
@@ -16,8 +18,8 @@ const Sidebar = ({ isSidebarOpen }) => {
       className="fixed inset-y-0 left-0 bg-gray-800 text-white z-20"
       style={{
         width: `${sidebarWidth}px`,
-        transform: isSidebarOpen ? 'translateX(0)' : `translateX(-100%)`, // Apply smooth sliding
-        transition: `transform ${transitionDuration} ease`, // Smooth transition for sidebar
+        transform: isSidebarOpen ? 'translateX(0)' : 'translateX(-100%)',
+        transition: `transform ${transitionDuration} ease`,
       }}
     >
       <div className="p-4">
@@ -30,7 +32,7 @@ const Sidebar = ({ isSidebarOpen }) => {
               className="flex justify-between items-center hover:bg-gray-700 p-2 rounded cursor-pointer"
             >
               <span>Bank Management</span>
-              <span>{isBankDropdownOpen ? '▲' : '▼'}</span> {/* Dropdown icon */}
+              <span>{isBankDropdownOpen ? '▲' : '▼'}</span>
             </div>
             {/* Dropdown Content */}
             {isBankDropdownOpen && (
