@@ -3,26 +3,42 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '../app/redux/slices/authSlice';
+import { loginUser } from '../app/redux/slices/authSlice1';
 
 export default function LoginForm() {
   const [password, setPassword] = useState('');
-  const [mobileNo, setMobileNo] = useState('');
+  const [mobileno, setMobileNo] = useState('');
   const dispatch = useDispatch();
   const router = useRouter();
-  const { user, loading, error } = useSelector((state) => state.auth);
+  const { user, loading, error,token } = useSelector((state) => state.auth);
+  console.log(user,token)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(loginUser({ mobileNo, password }));
+    const resultAction = await dispatch(loginUser({ mobileno, password }));
+    console.log(resultAction);
+    if (loginUser.fulfilled.match(resultAction)) {
+      // Redirect based on role after successful login
+      console.log(resultAction.payload.user?.role);
+      if (resultAction.payload.user?.role === 'MasterAdmin') {
+        router.push('/distributor');
+      } else if (resultAction.payload.user?.role === 'SuperAdmin') {
+        router.push('/');
+      } else {
+        router.push('/collector'); // Default redirect
+      }
+    }
   };
 
   // Redirect if user is logged in
   useEffect(() => {
-    if (user) {
-      router.push('/dashboard');
+    if (token) {
+      router.push('/');
     }
-  }, [user, router]);
+  }, [token, router]);
+
+
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -33,13 +49,13 @@ export default function LoginForm() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="mobileNo" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="mobileno" className="block text-sm font-medium text-gray-700">
               Mobile Number
             </label>
             <input
               type="tel"
-              id="mobileNo"
-              value={mobileNo}
+              id="mobileno"
+              value={mobileno}
               onChange={(e) => setMobileNo(e.target.value)}
               required
               className="w-full p-3 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"

@@ -6,11 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 const MasterTable = ({ onEdit }) => {
   const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.master);
+  const { user, loading, error, token } = useSelector((state) => state.auth);
 
+console.log(user);
 
-  useEffect(() => {
+useEffect(() => {
+  if (!user) return; // अगर user null है तो कुछ मत करो
+
+  if (user.role === 'SuperAdmin') {
     dispatch(fetchMasterData());
-  }, [dispatch]);
+  } else {
+    dispatch(fetchMasterData(user.id));
+  }
+}, [user, dispatch]);
 
   if (status === 'loading') {
     return <div>Loading...</div>;

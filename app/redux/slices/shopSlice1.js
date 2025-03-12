@@ -1,27 +1,25 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/lapu-collector/';
+// const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/lapu-collector/';
 // api/collector/get/lapu/:id
-// const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/collector/get/lapu';
+const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/collector/get/lapu';
 // Fetch shops
 export const fetchshops = createAsyncThunk('shop/fetchshops', async (id,ident) => {
   let response;
   if(id){
     if(ident==id){
-      alert('jk')
       response = await axios.get(`${API_URL}/${id}`);
 
     }else{
-      // alert('hello')
+    //   alert('hello')
       response = await axios.get(`${API_URL}/${id}`);
     }
   }else{
-    // alert('without id')
     response = await axios.get(API_URL);
   }
-  console.log(response.data);
-  return response.data;
+  console.log(response.data.Shops);
+  return response.data.Shops;
 });
 
 // Add shop

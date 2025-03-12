@@ -2,14 +2,44 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://12flf535-3012.inc1.devtunnels.ms/api/collector';
+const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/collector';
 
 // Fetch all data
-export const fetchcollectorData = createAsyncThunk('collector/fetchcollectorData', async () => {
-  const response = await axios.get(API_URL);
+export const fetchcollectorData = createAsyncThunk('collector/fetchcollectorData', async (id) => {
+  let response;
+  if(id){
+    response=await axios.get(`${API_URL}/oneColl/${id}`);
+  }else{
+    response = await axios.get(API_URL);
+  }
   console.log(response.data);
   return response.data;
 });
+
+// export const fetchcollectorData = createAsyncThunk(
+//   "collector/fetchcollectorData",
+//   async (id) => {
+//     const token = localStorage.getItem("token"); // Get token from localStorage
+//     let response;
+
+//     if (!id) {
+//       response = await axios.get(`${API_URL}/getCollectorby/${id}`, {
+//         headers: {
+//           Authorization: `Bearer ${token}`, // Add token in headers
+//         },
+//       });
+//     } else {
+//       response = await axios.get(API_URL, {
+//         headers: {
+//           Authorization: `Bearer ${token}`, // Add token in headers
+//         },
+//       });
+//     }
+
+//     console.log(response.data);
+//     return response.data;
+//   }
+// );
 
 // Add new data
 export const addcollectorData = createAsyncThunk('collector/addcollectorData', async (data) => {

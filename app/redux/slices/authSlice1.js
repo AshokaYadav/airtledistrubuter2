@@ -1,3 +1,4 @@
+// app/features/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -7,13 +8,13 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post('https://gsr9qc3n-3012.inc1.devtunnels.ms/api/admin/login', credentials);
+      console.log(response.data)
       return response.data; // Assuming the API returns a token
     } catch (error) {
       return rejectWithValue(error.response.data);
     }
   }
 );
-
 
 const authSlice = createSlice({
   name: 'auth',
@@ -28,18 +29,17 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.error = null;
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
     },
     initializeUserFromStorage: (state) => {
-        
-        const storedUser = localStorage.getItem('user');
-        const storedToken = localStorage.getItem('token');
-        // console.log(storedUser)
-        // console.log(storedToken)
-        if (storedUser && storedToken) {
-          state.user = JSON.parse(storedUser);
-          state.token = storedToken;
-        }
-      },
+      const storedUser = localStorage.getItem('user');
+      const storedToken = localStorage.getItem('token');
+      if (storedUser && storedToken) {
+        state.user = JSON.parse(storedUser);
+        state.token = storedToken;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -49,11 +49,12 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.signin; // Adjust based on API response
+        state.user = action.payload.user; // Adjust based on API response
         state.token = action.payload.token;
-         // Save user and token to localStorage
-         localStorage.setItem('user', JSON.stringify(action.payload.signin));
-         localStorage.setItem('token', action.payload.token);
+        // Save user and token to localStorage
+        // localStorage(action.payload);
+        localStorage.setItem('user', JSON.stringify(action.payload.user));
+        localStorage.setItem('token', action.payload.token);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -62,5 +63,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout,initializeUserFromStorage } = authSlice.actions;
+export const { logout, initializeUserFromStorage } = authSlice.actions;
 export default authSlice.reducer;

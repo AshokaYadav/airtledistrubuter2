@@ -2,11 +2,16 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'https://12flf535-3012.inc1.devtunnels.ms/api/master';
+const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/master';
 
 // Fetch all data
-export const fetchMasterData = createAsyncThunk('master/fetchMasterData', async () => {
-  const response = await axios.get(API_URL);
+export const fetchMasterData = createAsyncThunk('master/fetchMasterData', async (id) => {
+  let response;
+  if(id){
+    response = await axios.get(`${API_URL}/id/${id}`);
+  }else{
+    response = await axios.get(`${API_URL}`);
+  }
   return response.data;
 });
 

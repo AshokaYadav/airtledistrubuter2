@@ -2,37 +2,43 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { fetchMasterData, fetchBanks } from '../redux/slices/masterSlice';
-import TransactionTable from '@/components/Transaction/TransactionTable';
-import TransactionForm from '@/components/Transaction/TransactionForm';
-import { fetchBanks } from '../redux/slices/bankSlice';
-import { fetchMasterData } from '../redux/slices/masterSlice';
-import { fetchTransactions } from '../redux/slices/transactionSlice';
+// import TransactionTable from '@/components/Transaction/TransactionTable';
+// import TransactionForm from '@/components/Transaction/TransactionForm';
+// import { fetchBanks } from '../redux/slices/bankSlice';
+// import { fetchMasterData } from '../redux/slices/masterSlice';
+// import { fetchTransactions } from '../redux/slices/transactionSlice';
 import ShopForm from '@/components/Shops/ShopForm';
 import ShopTable from '@/components/Shops/ShopTable';
-import { fetchshops, uploadExcelFile } from '../redux/slices/shopSlice';
+import { fetchshops, uploadExcelFile } from '@/app/redux/slices/shopSlice1';
+// import { fetchshops, uploadExcelFile } from '../redux/slices/shopSlice';
 // import TransactionForm from '../components/TransactionForm';
 // import TransactionTable from '../components/TransactionTable';
 
-const Shops = () => {
+const Shops = ({params}) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+  const {shopid}=React.use(params);
+
+
+  console.log(shopid)
+ 
   
   const { user, loading, error, token } = useSelector((state) => state.auth);
 
-  console.log(user);
-  
+  console.log(user); 
+//   uploadExcelFile
   
   useEffect(() => {
-    if (!user) return; // अगर user null है तो कुछ मत करो
+    // if (!user) return; // अगर user null है तो कुछ मत करो
   
-    if (user.role === 'SuperAdmin') {
-      dispatch(fetchshops());
-    } else {
-      // dispatch(fetchshops(user.id,id));
-      dispatch(fetchshops());
-    }
-  }, [user, dispatch]);
+    // if (user.role === 'SuperAdmin') {
+    //   dispatch(fetchshops());
+    // } else {
+    //   dispatch(fetchshops(shopid));
+    // }
+    dispatch(fetchshops(shopid));
+  }, [ shopid, dispatch]);
   
 
   const handleEdit = (data) => {

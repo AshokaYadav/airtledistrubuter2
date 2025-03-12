@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { fetchMasterData } from '../redux/slices/masterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import CollectorTable from '@/components/Collector/CollectorTable';
+import { fetchcollectorData } from '../redux/slices/collectorSlice';
 const Home = () => {
   const dispatch = useDispatch();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -12,9 +13,10 @@ const Home = () => {
 
   console.log(data,status);
 
-   useEffect(() => {
-      dispatch(fetchMasterData());
-    }, [dispatch]);
+  //  useEffect(() => {
+  //     // dispatch(fetchMasterData());
+  //     dispatch(fetchcollectorData())
+  //   }, [dispatch]);
 
   const handleEdit = (data) => {
     setEditData(data);

@@ -2,10 +2,12 @@
 import MasterForm from '@/components/Master/MasterForm';
 import MasterTable from '@/components/Master/MasterTable';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
 const Home = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+
 
   const handleEdit = (data) => {
     setEditData(data);

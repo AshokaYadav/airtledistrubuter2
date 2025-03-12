@@ -1,12 +1,17 @@
 'use client';
 
+import { logout } from '@/app/redux/slices/authSlice1';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useRef, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 
 const Header = ({ isSidebarOpen, toggleSidebar }) => {
   const headerRef = useRef(null);
   const sidebarWidth = 256; // Sidebar width
   const transitionDuration = '0.3s'; // Transition duration
+  const dispatch=useDispatch();
+  const router=useRouter();
 
   // Get header height
   useEffect(() => {
@@ -15,6 +20,13 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
       document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
     }
   }, []);
+
+  const handleLogout = () => {
+  
+
+    dispatch(logout()); // Clear user data from Redux
+    router.push('/login'); // Redirect to login page
+  };
 
   return (
     <header
@@ -48,18 +60,13 @@ const Header = ({ isSidebarOpen, toggleSidebar }) => {
           Airtel Distributor
         </Link>
       </div>
-      {/* Navigation Links */}
-      <nav className="hidden sm:flex space-x-4">
-        <Link href="/dashboard" className="hover:text-gray-300">
-          Dashboard
-        </Link>
-        <Link href="/profile" className="hover:text-gray-300">
-          Profile
-        </Link>
-        <Link href="/settings" className="hover:text-gray-300">
-          Settings
-        </Link>
-      </nav>
+      {/* Navigation Links */} 
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 hover:bg-red-700 px-4 py-2 rounded text-white"
+      >
+        Logout
+      </button>
     </header>
   );
 };

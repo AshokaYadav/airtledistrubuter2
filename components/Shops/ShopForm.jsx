@@ -10,7 +10,8 @@ const ShopForm = ({ isOpen, onClose, editData }) => {
         Retailer_Name: '',
         mobileno:  '',
         CollectorId: '',
-        balance: ''
+        balance: '',
+        whatsapp_no: '',
     }
   );
 
@@ -101,6 +102,22 @@ const ShopForm = ({ isOpen, onClose, editData }) => {
               placeholder="Enter Collector mobile no"
             />
           </div>
+
+          <div>
+            <label htmlFor="whatsapp_no" className="block mb-2 text-sm font-medium text-gray-700">
+              whatsapp_no
+            </label>
+            <input
+              type="number"
+              id="whatsapp_no"
+              name="whatsapp_no"
+              value={formData.whatsapp_no}
+              onChange={handleChange}
+              className="w-full p-2 border rounded-md"
+              placeholder="Enter whatsapp_no"
+            />
+          </div>
+
 
 
 

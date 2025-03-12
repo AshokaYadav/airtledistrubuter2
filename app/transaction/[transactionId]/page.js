@@ -1,39 +1,26 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-// import { fetchMasterData, fetchBanks } from '../redux/slices/masterSlice';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import TransactionTable from '@/components/Transaction/TransactionTable';
 import TransactionForm from '@/components/Transaction/TransactionForm';
-import { fetchBanks } from '../redux/slices/bankSlice';
-import { fetchMasterData } from '../redux/slices/masterSlice';
-import { fetchTransactions } from '../redux/slices/transactionSlice';
-import ShopForm from '@/components/Shops/ShopForm';
-import ShopTable from '@/components/Shops/ShopTable';
-import { fetchshops, uploadExcelFile } from '../redux/slices/shopSlice';
-// import TransactionForm from '../components/TransactionForm';
-// import TransactionTable from '../components/TransactionTable';
+import { fetchBanks } from '../../redux/slices/bankSlice';
+import { fetchMasterData } from '../../redux/slices/masterSlice';
+import { fetchTransactions, uploadExcelFile } from '@/app/redux/slices/transactionSlice';
 
-const Shops = () => {
+
+const HomePage = ({params}) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
+  const {transactionId}=React.use(params);
   
-  const { user, loading, error, token } = useSelector((state) => state.auth);
+  
 
-  console.log(user);
-  
-  
-  useEffect(() => {
-    if (!user) return; // अगर user null है तो कुछ मत करो
-  
-    if (user.role === 'SuperAdmin') {
-      dispatch(fetchshops());
-    } else {
-      // dispatch(fetchshops(user.id,id));
-      dispatch(fetchshops());
-    }
-  }, [user, dispatch]);
-  
+  React.useEffect(() => {
+    dispatch(fetchMasterData());
+    dispatch(fetchBanks());
+    dispatch(fetchTransactions(transactionId))
+  }, [dispatch]);
 
   const handleEdit = (data) => {
     setEditData(data);
@@ -61,20 +48,21 @@ const Shops = () => {
         <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
           Upload Excel
         </label>
-        <button   
+        <button
           onClick={() => {
             setEditData(null);
             setIsModalOpen(true);
           }}
           className="bg-blue-500 text-white p-2 rounded"
         >
-          Shops
+          Transaction Form
         </button>
       </div>
 
-      <ShopTable onEdit={handleEdit} />
+      <TransactionTable onEdit={handleEdit} />
+
       {isModalOpen && (
-        <ShopForm
+        <TransactionForm
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           editData={editData}
@@ -84,4 +72,4 @@ const Shops = () => {
   );
 };
 
-export default Shops;
+export default HomePage;

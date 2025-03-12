@@ -32,7 +32,7 @@ const TransactionTable = ({ onEdit }) => {
           {transactions.map((transaction,index) => (
             <tr key={transaction.id}>
               <td className="p-2 border text-center">{index+1}</td>
-              <td className="p-2 border text-center">{transaction.Bank.bankName}</td>
+              <td className="p-2 border text-center">{transaction.Bank?.bankName}</td>
               <td className="p-2 border  text-center">{transaction.utrNo}</td>
               <td className="p-2 border  text-center">{transaction.remark}</td>
               <td className="p-2 border  text-center">{transaction.BeforeBalances}</td>

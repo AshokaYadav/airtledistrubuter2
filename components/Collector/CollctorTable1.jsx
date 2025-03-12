@@ -56,8 +56,7 @@ useEffect(() => {
                 >
                   Delete
                 </button>
-               <Link
-                href={`/collector/${item.id}`}
+               <Link href={`/collector/${item.id}`}
                 className="bg-blue-500 text-white p-2 rounded ml-2"
                >
                View

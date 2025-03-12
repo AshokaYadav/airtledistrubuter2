@@ -1,28 +1,52 @@
 'use client';
-
 import { useRouter } from 'next/navigation';
-import { FaMobileAlt } from 'react-icons/fa';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+// import { initializeUserFromStorage } from './features/authSlice';
 
 export default function Home() {
+  const { user, token } = useSelector((state) => state.auth);
   const router = useRouter();
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+
+
+  useEffect(() => {
+    // Wait for token to be available
+    if (token === null) {
+      setTimeout(() => {
+        setIsCheckingAuth(false);
+      }, 1000); // Delay to wait for Redux state update
+    } else {
+      setIsCheckingAuth(false);
+    }
+  }, [token]);
+
+
+
+
+
+  useEffect(() => {
+    if (!isCheckingAuth && !token) {
+      router.push('/login'); // Redirect after checking auth
+    }
+  }, [isCheckingAuth, token, router]);
+
+
+
+
+
+
+
+
+  if (isCheckingAuth) {
+    return <p>Checking authentication...</p>; // Show loader while checking
+  }
+
+  if (!token) {
+    return <p>Redirecting to login...</p>;
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-red-600 text-white">
-      <div className="max-w-lg w-full bg-white text-gray-900  rounded-lg shadow-lg text-center">
-        <h1 className="text-4xl font-bold mb-4">Airtel Distributor</h1>
-        <p className="text-lg mb-6">Join the Airtel Network and grow your business with us.</p>
-        
-        <div className="flex justify-center mb-6">
-          <FaMobileAlt className="text-red-600 text-6xl" />
-        </div>
-
-        <button
-          onClick={() => router.push('/dashboard')}
-          className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
-        >
-          Get Started
-        </button>
-      </div>
-    </div>
+    <h1>Hello, this is another level of the home page!</h1>
   );
 }
