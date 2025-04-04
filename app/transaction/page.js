@@ -16,9 +16,10 @@ const HomePage = () => {
   const [editData, setEditData] = useState(null);
 
   React.useEffect(() => {
+    // alert('helloddddddddddddddddddd')
     dispatch(fetchMasterData());
     dispatch(fetchBanks());
-    dispatch(fetchTransactions())
+    dispatch(fetchTransactions());
   }, [dispatch]);
 
   const handleEdit = (data) => {

@@ -6,7 +6,13 @@ import transactionReducer from  './slices/transactionSlice'
 import collectorReducer from './slices/collectorSlice'
 import shopReducer from './slices/shopSlice'
 import shopReducer1 from './slices/shopSlice1'
-
+import fileUploadReducer from './slices/fileUploadSlice';
+import distributorReducer from './slices/distributorSlice';
+import ledgertransactionReducer from './slices/distributorledger/transactionSlice';
+// import orderReducer from './slices/distributorledger/orderSlice';
+import mastertransactionReducer from './slices/distributorledger/orderSlice';
+import shopTransactionReducer from './slices/distributorledger/shopTransactionSlice';
+import distributorBankTransactionReducer from './slices/distributorledger/distributorBankTransactionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +22,12 @@ export const store = configureStore({
     transaction:transactionReducer,
     collector:collectorReducer,
     shop:shopReducer,
-    shop1:shopReducer1
+    shop1:shopReducer1,
+    fileUpload: fileUploadReducer,
+    distributor: distributorReducer,
+    ledgertransaction: ledgertransactionReducer,
+    mastertransaction: mastertransactionReducer,
+    shopTransaction: shopTransactionReducer,
+    distributorBankTransaction: distributorBankTransactionReducer,
   },
 });

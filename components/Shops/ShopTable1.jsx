@@ -6,11 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { deleteTransaction } from '../features/transactionSlice';
 import TransactionForm1 from '../Transaction/TransactionForm1';
 
-const ShopTable = ({ onEdit ,user1 }) => {
+const ShopTable1 = ({ onEdit ,user1 }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { shops, status } = useSelector((state) => state.shop);
   const [currentShopId, setCurrentShopId] = useState(null);
+  const [currentCollectorId, setCurrentCollectorId] = useState(null);
   console.log(shops);
   let navData=[];
   
@@ -33,6 +34,7 @@ const ShopTable = ({ onEdit ,user1 }) => {
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
            currentShopId={currentShopId}
+           currentCollectorId={currentCollectorId}
         />
       )}
     <div className="overflow-x-auto">
@@ -50,14 +52,12 @@ const ShopTable = ({ onEdit ,user1 }) => {
         </thead>
         <tbody>
           {navData?.map((shop,index) => (
-            <tr key={shop.id} className={`${
-              shop.balance >= 5000 ? " font-semibold bg-red-500 text-white" : "text-black"
-            }`}>
+            <tr key={shop.id}>
                   <td className="p-2 border text-center">{index+1}</td>
               <td className="p-2 border text-center">{shop.Retailer_Name}</td>
               <td className="p-2 border  text-center">{shop.mobileno}</td>
-              <td className={`p-2 border  text-center `}>{shop.balance}</td>
-              <td className="p-2 border  text-center">{shop.Collector?.mobileno}</td>
+              <td className="p-2 border  text-center">{shop.balance}</td>
+              <td className="p-2 border  text-center">{shops.mobileno}</td>
               <td className="p-2 border  text-center">{shop.whatsapp_no}</td>
               <td className="p-2 border  text-center">
               <button
@@ -65,6 +65,7 @@ const ShopTable = ({ onEdit ,user1 }) => {
                   onClick={() => {
                     setCurrentShopId(shop.mobileno);
                     setIsModalOpen(true);
+                    setCurrentCollectorId(shops.mobileno);
                   }}
                   className="bg-yellow-500 text-white p-1 rounded m-1"
                 >
@@ -91,7 +92,7 @@ const ShopTable = ({ onEdit ,user1 }) => {
                   )
                 }
                 <Link
-                  href={`/transaction/${shop.id}?type=shoptransaction`}
+                  href={`/transaction/${shop.mobileno}?type=shoptransaction`}
                 
                   className="bg-green-500 text-white p-2 rounded ml-2"
                 >
@@ -108,4 +109,4 @@ const ShopTable = ({ onEdit ,user1 }) => {
   );
 };
 
-export default ShopTable;
+export default ShopTable1;

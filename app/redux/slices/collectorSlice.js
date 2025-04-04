@@ -8,7 +8,12 @@ const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/collector';
 export const fetchcollectorData = createAsyncThunk('collector/fetchcollectorData', async (id) => {
   let response;
   if(id){
-    response=await axios.get(`${API_URL}/oneColl/${id}`);
+    // response=await axios.get(`${API_URL}/onedistributor/ofcollectors/${id}`)
+    // alert('this one will get called');
+    console.log(id);
+   id.role=='Collector' ? response=await axios.get(`${API_URL}/getCollectorby/${id.id}`) : response=await axios.get(`${API_URL}/onedistributor/ofcollectors/${id.id}`);
+    console.log(response.data);
+    
   }else{
     response = await axios.get(API_URL);
   }

@@ -19,8 +19,19 @@ const Shops = () => {
   const [editData, setEditData] = useState(null);
   
   const { user, loading, error, token } = useSelector((state) => state.auth);
+   const { shops, status } = useSelector((state) => state.shop);
+
+
+   console.log(shops);
 
   console.log(user);
+
+   React.useEffect(() => {
+      // dispatch(fetchMasterData());
+      dispatch(fetchBanks());
+      
+      // dispatch(fetchTransactions())
+    }, [dispatch]);
   
   
   useEffect(() => {
@@ -51,7 +62,7 @@ const Shops = () => {
   return (
     <div className="p-6">
       <div className="flex justify-between m-4">
-      <input
+        <input
           type="file"
           id="file-upload"
           style={{ display: 'none' }}
@@ -61,6 +72,14 @@ const Shops = () => {
         <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
           Upload Excel
         </label>
+
+      
+        <div className="text-lg font-semibold text-gray-700">
+          Due Amount: <span className="text-red-500">Rs. {3000}</span>
+        </div>
+
+        
+        
         <button   
           onClick={() => {
             setEditData(null);
@@ -72,7 +91,8 @@ const Shops = () => {
         </button>
       </div>
 
-      <ShopTable onEdit={handleEdit} />
+      <ShopTable onEdit={handleEdit} user1={user} />
+
       {isModalOpen && (
         <ShopForm
           isOpen={isModalOpen}

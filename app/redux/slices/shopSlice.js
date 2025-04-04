@@ -27,11 +27,11 @@ export const fetchshops = createAsyncThunk('shop/fetchshops', async (id,ident) =
 // Add shop
 export const addshop = createAsyncThunk('shop/addshop', async (data) => {
   const response = await axios.post(API_URL, data);
-  console.log(response.data.data);
+  console.log(response.data.createLapu);
   return response.data.createLapu;
 });
 
-
+  
 
 
 // Update shop
@@ -59,14 +59,14 @@ export const deleteshop = createAsyncThunk('shop/deleteshop', async (id) => {
 
 
 // Upload Excel file
-export const uploadExcelFile = createAsyncThunk('shop/uploadExcelFile', async (file, { rejectWithValue }) => {
+export const uploadExcelFile = createAsyncThunk('shop/uploadExcelFile', async (file, {dispatch, rejectWithValue }) => {
   alert('heelo')
   try {
     const formData = new FormData();
     formData.append('file', file);
     console.log(file);
 
-    const response = await axios.post(`${API_URL}/upload/`, formData, {
+    const response = await axios.post(`${API_URL}upload/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -74,8 +74,9 @@ export const uploadExcelFile = createAsyncThunk('shop/uploadExcelFile', async (f
 
     console.log(response);
     console.log(response.data.data);
+    dispatch(fetchshops());
 
-    return response.data.data
+    return []
 
     // return response.data;
   } catch (error) {

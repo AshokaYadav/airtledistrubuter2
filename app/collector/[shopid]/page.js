@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { fetchMasterData } from '../redux/slices/masterSlice';
 // import { fetchTransactions } from '../redux/slices/transactionSlice';
 import ShopForm from '@/components/Shops/ShopForm';
-import ShopTable from '@/components/Shops/ShopTable';
+import ShopTable1 from '@/components/Shops/ShopTable1';
 import { fetchshops, uploadExcelFile } from '@/app/redux/slices/shopSlice1';
 // import { fetchshops, uploadExcelFile } from '../redux/slices/shopSlice';
 // import TransactionForm from '../components/TransactionForm';
@@ -19,7 +19,8 @@ const Shops = ({params}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const {shopid}=React.use(params);
-
+  const user1 = JSON.parse(localStorage.getItem('user'))
+  console.log(user1);
 
   console.log(shopid)
  
@@ -56,29 +57,34 @@ const Shops = ({params}) => {
 
   return (
     <div className="p-6">
-      <div className="flex justify-between m-4">
-      <input
-          type="file"
-          id="file-upload"
-          style={{ display: 'none' }}
-          onChange={handleFileUpload}
-          accept=".xlsx, .xls"
-        />
-        <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
-          Upload Excel
-        </label>
-        <button   
-          onClick={() => {
-            setEditData(null);
-            setIsModalOpen(true);
-          }}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Shops
-        </button>
-      </div>
 
-      <ShopTable onEdit={handleEdit} />
+     {
+      user1.role === 'SuperAdmin' && (
+        <div className="flex justify-between m-4">
+        <input
+            type="file"
+            id="file-upload"
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+            accept=".xlsx, .xls"
+          />
+          <label htmlFor="file-upload" className="bg-blue-500 text-white p-2 rounded cursor-pointer">
+            Upload Excel
+          </label>
+          <button   
+            onClick={() => {
+              setEditData(null);
+              setIsModalOpen(true);
+            }}
+            className="bg-blue-500 text-white p-2 rounded"
+          >
+            Shops
+          </button>
+        </div>
+      )
+     }
+
+      <ShopTable1 onEdit={handleEdit} user1={user1} />
       {isModalOpen && (
         <ShopForm
           isOpen={isModalOpen}

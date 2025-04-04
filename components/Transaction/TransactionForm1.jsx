@@ -1,31 +1,41 @@
 'use client'
+import { fetchBanks } from '@/app/redux/slices/bankSlice';
 import { addTransaction, updateTransaction } from '@/app/redux/slices/transactionSlice';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-const TransactionForm = ({ isOpen, onClose, editData }) => {
-
-  console.log(isOpen);
-  console.log(onClose);
-  console.log(editData);
-
-
+const TransactionForm1 = ({ isOpen, onClose, editData,currentShopId,currentCollectorId }) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState(
     editData || {
-      BankId: '',
-      distributeId:  '',
-      utrNo: '',
+      // BankId: '',
+      // distributeId:  '',
+      // utrNo: '',
       remark: '',
       amount: '',
-      shopId:'',
-      type:'Credit'
+      shopId:currentShopId,
+      type:'Debit',
+      collectorId: currentCollectorId,
     }
   );
 
+  
+
   useEffect(()=>{
+    
+    // console.log(formData);
+    
+     dispatch(fetchBanks());
+  },[dispatch])
+
+
+  useEffect(()=>{
+    
     console.log(formData);
+    
+   
   },[formData])
+
 
   const {
     banks: { banks, status: banksStatus, error },
@@ -39,23 +49,7 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (editData) {
-      dispatch(updateTransaction({ ...formData, id: editData.id }));
-    } else {
-      const selectedBank = banks.find(bank => bank.id === formData.BankId);
-      const bankName = selectedBank ? selectedBank.bankName : ''; // fallback to empty string if not found
-  
-      // Find the corresponding name from the data array
-      const selectedName = data.find(item => item.id === formData.distributeId);
-      const name = selectedName ? selectedName.name : ''; // fallback to empty string if not found
-      const updatedFormData = {
-        ...formData,
-        bankName: bankName,
-        name: name,
-      };
-  
-      dispatch(addTransaction(updatedFormData));
-    }
+      dispatch(addTransaction(formData));
     onClose();
   };
 
@@ -67,68 +61,49 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
         <h2 className="text-xl font-bold mb-4">{editData ? 'Edit Transaction' : 'Add Transaction'}</h2>
         <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Bank Dropdown */}
-          <div>
-            <label htmlFor="BankId" className="block mb-2 text-sm font-medium text-gray-700">
-              Select Bank
-            </label>
-            <select
-              id="BankId"
-              name="BankId"
-              value={formData.BankId}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select Bank</option>
-              {/* Populate banks dynamically */}
-              {banks?.map((bank) => (
-                <option key={bank.id} value={bank.id}>
-                  {bank.bankName}
-                </option>
-              ))}
-            </select>
-          </div>
+       
 
           {/* Data Dropdown */}
-          <div>
-            <label htmlFor="distributeId" className="block mb-2 text-sm font-medium text-gray-700">
+          {/* <div> */}
+            {/* <label htmlFor="distributeId" className="block mb-2 text-sm font-medium text-gray-700">
               Select Distributor
-            </label>
-            <select
+            </label> */}
+            {/* <select
               id="distributeId"
               name="distributeId"
               value={formData.distributeId}
               onChange={handleChange}
               className="w-full p-2 border rounded-md"
-            >
-              <option value="">Select Distributor</option>
+            > */}
+              {/* <option value="">Select Distributor</option> */}
               {/* Populate data dynamically */}
-              {data?.map((item) => (
-                <option key={item.id} value={item.id}>
+              {/* {data?.map((item) => ( */}
+                {/* <option key={item.id} value={item.id}>
                   {item.name}
-                </option>
-              ))}
-            </select>
-          </div>
+                </option> */}
+              {/* // ))} */}
+            {/* </select> */}
+          {/* </div> */}
 
-          <div>
-            <label htmlFor="shopId" className="block mb-2 text-sm font-medium text-gray-700">
+          {/* <div> */}
+            {/* <label htmlFor="shopId" className="block mb-2 text-sm font-medium text-gray-700">
               Shop Id
-            </label>
-            <input
+            </label> */}
+            {/* <input
               type="text"
               id="shopId"
               name="shopId"
-              value={formData.shopId ? formData.shopId : ''}
+              value={formData.shopId}
               onChange={handleChange}
               className="w-full p-2 border rounded-md"
               placeholder="Enter Shop Id"
-            />
-          </div>
+            /> */}
+          {/* </div> */}
 
 
 
           {/* UTR No Input */}
-          <div>
+          {/* <div>
             <label htmlFor="utrNo" className="block mb-2 text-sm font-medium text-gray-700">
               UTR No
             </label>
@@ -136,56 +111,42 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
               type="text"
               id="utrNo"
               name="utrNo"
-              value={formData.utrNo ? formData.utrNo : ''}
+              value={formData.utrNo}
               onChange={handleChange}
               className="w-full p-2 border rounded-md"
               placeholder="Enter UTR No"
             />
-          </div>
+          </div> */}
 
           {/* Remark Input */}
-          <div>
-            <label htmlFor="remark" className="block mb-2 text-sm font-medium text-gray-700">
-              Remark
-            </label>
-            <input
-              type="text"
-              id="remark"
-              name="remark"
-              value={formData.remark}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
-              placeholder="Enter Remark"
-            />
-          </div>
 
 
 
           {/* Amount Input */}
-          <div>
+          {/* <div>
             <label htmlFor="type" className="block mb-2 text-sm font-medium text-gray-700">
-              Select Type
+            Select Type
             </label>
             <select
-              id="type"
-              name="type"
-              value={formData.type}
-              onChange={handleChange}
-              className="w-full p-2 border rounded-md"
+            id="type"
+            name="type"
+            value={formData.type}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-md"
             >
-              <option value="">Select Distributor</option>
-                <option  value="Credit">
-                  Credit 
-                </option>
-                <option  value="Debit">
-                  Debit
-                </option>
-                <option  value="Other">
-                  Other
-                </option>
-          
+            <option value="">Select Distributor</option>
+            <option  value="Credit">
+            Credit 
+            </option>
+            <option  value="Debit">
+            Debit
+            </option>
+            <option  value="Other">
+            Other
+            </option>
+            
             </select>
-          </div>
+            </div> */}
 
 
 
@@ -206,6 +167,20 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
             />
           </div>
 
+            <div>
+              <label htmlFor="remark" className="block mb-2 text-sm font-medium text-gray-700">
+                Remark
+              </label>
+              <input
+                type="text"
+                id="remark"
+                name="remark"
+                value={formData.remark}
+                onChange={handleChange}
+                className="w-full p-2 border rounded-md"
+                placeholder="Enter Remark"
+              />
+            </div>
           {/* Submit Button */}
           <div className="mt-4 flex justify-between">
             <button
@@ -229,4 +204,4 @@ const TransactionForm = ({ isOpen, onClose, editData }) => {
   );
 };
 
-export default TransactionForm;
+export default TransactionForm1;

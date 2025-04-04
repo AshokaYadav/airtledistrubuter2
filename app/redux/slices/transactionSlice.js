@@ -4,21 +4,94 @@ import axios from 'axios';
 const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/bank-transaction';
 
 
+// collector/transations/:id
 
 // Fetch transactions
-export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions', async (id) => {
-  console.log(id);
-  const response =id ? await axios.get(`${API_URL+`/getshopsone/transations`}/${id}`) : await axios.get(API_URL);
-  console.log(response.data);
-  return id ? response.data.data : response.data;
-});
+// export const fetchTransactions = createAsyncThunk('transaction/fetchTransactions', async (id,type) => {
+//   // collectortransaction
+//   console.log(id);
+//   console.log(type);
+//   // alert(id);
+//   // here if here i have id then i will chek type if type is collectortransaction then api_URL + collector/transations/:id else API_URL+`/getshopsone/transations`}/${id}` if not id
+//   //  simpler api_url
+//   const response =id ? await axios.get(`${API_URL+`/getshopsone/transations`}/${id}`) : await axios.get(API_URL);
+//   console.log(id);
+//   console.log(response.data);
+//   return id ? response.data : response.data;
+// });
+
+// export const fetchTransactions = createAsyncThunk(
+//   'transaction/fetchTransactions',
+//   async ({ id, type }={}) => {  // Object destructuring
+//     try {
+//       let url = API_URL; // Default URL
+
+//       if (id) {
+//         url = type === 'collectortransaction' 
+//           ? `${API_URL}/collector/transations/${id}` 
+//           : `${API_URL}/getshopsone/transations/${id}`;
+//       }
+
+//       console.log(url);
+//       console.log("Fetching transactions from:", url);
+//       const response = await axios.get(url);
+
+//       console.log("Fetched transactions:", response);
+
+//       console.log(response.data);
+      
+//       return response.data;
+//     } catch (error) {
+//       console.error("Error fetching transactions:", error);
+//       throw error; // Ensure Redux handles error properly
+//     }
+//   }
+// );
+
+
+export const fetchTransactions = createAsyncThunk(
+  'transaction/fetchTransactions',
+  async ({ id, type }={}) => {  // Object destructuring
+    try {
+      let url = API_URL; // Default URL
+
+      if (id) {
+        // alert(type === 'collectortransaction');
+        url = type === 'collectortransaction' 
+          ? `${API_URL}/shops/transactions/byCollectorId/${id}` 
+          : `${API_URL}/get/alltransactionsAShop/${id}`;
+      }
+
+      console.log(url);
+      console.log("Fetching transactions from:", url);
+      const response = await axios.get(url);
+
+      console.log("Fetched transactions:", response);
+
+      console.log(response.data);
+      
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching transactions:", error);
+      throw error; // Ensure Redux handles error properly
+    }
+  }
+);
+// createBTCollection/shops
 
 // Add transaction
+// export const addTransaction = createAsyncThunk('transaction/addTransaction', async (data) => {
+//   const response = await axios.post(API_URL, data);
+//   console.log(response.data.data);
+//   return response.data.data;
+// });
 export const addTransaction = createAsyncThunk('transaction/addTransaction', async (data) => {
-  const response = await axios.post(API_URL, data);
+  alert('heelo khauf')
+  const response = await axios.post(`${API_URL}/createBTCollection/shops`, data);
   console.log(response.data.data);
   return response.data.data;
 });
+
 
 // Update transaction
 export const updateTransaction = createAsyncThunk('transaction/updateTransaction', async (data) => {
@@ -62,7 +135,7 @@ export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', a
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState: {
-    transactions: [],
+    transactions: { transactions: [] },
     status: 'idle',
     uploadStatus: 'idle', // Add uploadStatus for Excel upload
     error: null,
@@ -75,6 +148,7 @@ const transactionSlice = createSlice({
       })
       .addCase(fetchTransactions.fulfilled, (state, action) => {
         state.status = 'succeeded';
+        console.log(state.transactions);
         state.transactions = action.payload;
       })
       .addCase(fetchTransactions.rejected, (state, action) => {
@@ -82,16 +156,18 @@ const transactionSlice = createSlice({
         state.error = action.error.message;
       })
       .addCase(addTransaction.fulfilled, (state, action) => {
-        state.transactions.push(action.payload);
+        console.log(action.payload);
+        console.log(state.transactions);
+        state.transactions.transactions.push(action.payload);
       })
       .addCase(updateTransaction.fulfilled, (state, action) => {
         const index = state.transactions.findIndex((t) => t.id.toString() === action.payload.id.toString());
         if (index !== -1) {
-          state.transactions[index] = action.payload;
+          state.transactions.transactions[index] = action.payload;
         }
       })
       .addCase(deleteTransaction.fulfilled, (state, action) => {
-        state.transactions = state.transactions.filter((t) => t.id !== action.payload);
+        state.transactions.transactions = state.transactions.transactions.filter((t) => t.id !== action.payload);
       })
       // Upload Excel file
       .addCase(uploadExcelFile.pending, (state) => {

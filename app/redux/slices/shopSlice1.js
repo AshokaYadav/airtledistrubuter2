@@ -5,6 +5,7 @@ import axios from 'axios';
 // api/collector/get/lapu/:id
 const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/collector/get/lapu';
 // Fetch shops
+
 export const fetchshops = createAsyncThunk('shop/fetchshops', async (id,ident) => {
   let response;
   if(id){
@@ -18,8 +19,8 @@ export const fetchshops = createAsyncThunk('shop/fetchshops', async (id,ident) =
   }else{
     response = await axios.get(API_URL);
   }
-  console.log(response.data.Shops);
-  return response.data.Shops;
+  console.log(response.data);
+  return response.data;
 });
 
 // Add shop
