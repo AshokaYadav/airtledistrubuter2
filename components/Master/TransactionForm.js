@@ -5,6 +5,7 @@ import { deleteMasterData, fetchMasterData } from '@/app/redux/slices/masterSlic
 
 const TransactionForm = ({ open, handleClose, distributorId }) => {
   const [bankId, setBankId] = useState("");
+  const [reason, setReason] = useState("");
   const [amount, setAmount] = useState("");
   const [remark, setRemark] = useState("");
   const dispatch = useDispatch();
@@ -65,7 +66,12 @@ const TransactionForm = ({ open, handleClose, distributorId }) => {
       return;
     }
 
-    dispatch(createTransactionAsync({ bankId, distributorId, amount, remark }));
+    if (!reason) {
+      alert("reason  is missing");
+      return;
+    }
+
+    dispatch(createTransactionAsync({ bankId, distributorId, amount, remark,reason }));
   };
 
   const handleClosePopup = () => {
@@ -119,6 +125,16 @@ const TransactionForm = ({ open, handleClose, distributorId }) => {
                 <option disabled>No banks available</option>
               )}
             </select>
+            <select
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              className="border p-2 w-full rounded-md mb-3"
+            >
+              <option value="" disabled>Select Reason</option>
+              <option value="Airtel">Airtel Order</option>
+              <option value="Other">Other Order</option>
+            </select>
+
             <input
               type="number"
               value={amount}
