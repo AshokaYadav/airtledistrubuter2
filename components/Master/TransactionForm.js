@@ -79,6 +79,7 @@ const TransactionForm = ({ open, handleClose, distributorId }) => {
     setBankId("");
     setAmount("");
     setRemark("");
+    setReason("");
     handleClose();
   };
 

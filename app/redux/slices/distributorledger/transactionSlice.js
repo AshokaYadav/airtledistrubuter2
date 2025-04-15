@@ -7,10 +7,10 @@ const API_URL = "https://gsr9qc3n-3012.inc1.devtunnels.ms/api/bank-transaction/o
 // ✅ Async Thunk for creating a transaction
 export const createTransactionAsync = createAsyncThunk(
   "transaction/create",
-  async ({ bankId, distributorId, amount, remark }, { dispatch, rejectWithValue }) => {
+  async ({ bankId, distributorId, amount, remark ,reason }, { dispatch, rejectWithValue }) => {
     try {
    
-      const response = await axios.post(API_URL, { bankId, distributorId, amount, remark });
+      const response = await axios.post(API_URL, { bankId, distributorId, amount, remark,reason });
       dispatch(fetchMasterData(2));
       
       return response.data;
