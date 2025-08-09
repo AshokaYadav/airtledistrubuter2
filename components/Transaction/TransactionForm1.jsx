@@ -18,6 +18,9 @@ const TransactionForm1 = ({ isOpen, onClose, editData,currentShopId,currentColle
       collectorId: currentCollectorId,
     }
   );
+  const {transaction}=useSelector(state=>state);
+  console.log(transaction);
+
 
   
 
@@ -49,7 +52,7 @@ const TransactionForm1 = ({ isOpen, onClose, editData,currentShopId,currentColle
 
   const handleSubmit = (e) => {
     e.preventDefault();
-      dispatch(addTransaction(formData));
+      dispatch(addTransaction(formData))
     onClose();
   };
 

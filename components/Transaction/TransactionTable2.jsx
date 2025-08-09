@@ -27,13 +27,14 @@ const TransactionTable2 = ({ onEdit }) => {
             <th className="p-2 border">Amount</th>
             <th className="p-2 border">After Balance</th>
             <th className="p-2 border">Transaction Date</th>
-            {/* <th className="p-2 border">Distrubutor</th>
-            <th className="p-2 border">Actions</th> */}
+            {/* <th className="p-2 border">Distrubutor</th> */}
+            <th className="p-2 border">Actions</th>
           </tr>
         </thead>
         <tbody>
           {transactions?.transactions?.map((transaction,index) => (
-            <tr key={transaction.id}>
+            <tr key={transaction.id}
+            className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
               <td className="p-2 border text-center">{index+1}</td>
               {/* <td className="p-2 border text-center">{transaction.Bank?.bankName}</td>
               <td className="p-2 border  text-center">{transaction.utrNo}</td>
@@ -45,21 +46,22 @@ const TransactionTable2 = ({ onEdit }) => {
   {new Date(transaction.createdAt).toDateString().split(" ").slice(1).join(" ")}{" "}
   - {new Date(transaction.createdAt).toLocaleTimeString()}
 </th>
-              <td className="p-2 border  text-center">{transaction.Master?.name}</td>
-              {/* <td className="p-2 border  text-center">
-                <button
+              {/* <td className="p-2 border  text-center">{transaction.Master?.name}</td> */}
+
+              <td className="p-2 border  text-center">
+                {/* <button
                   onClick={() => onEdit(transaction)}
                   className="bg-yellow-500 text-white p-1 rounded"
                 >
                   Edit
-                </button>
+                </button> */}
                 <button
-                  onClick={() => dispatch(deleteTransaction(transaction.id))}
+                  onClick={() => dispatch(deleteTransaction({primary_id:transaction.primary_id,source:transaction.source,id:transaction.id}))}
                   className="bg-red-500 text-white p-1 rounded ml-2"
                 >
                   Delete
                 </button>
-              </td> */}
+              </td>
             </tr>
           ))}
         </tbody>

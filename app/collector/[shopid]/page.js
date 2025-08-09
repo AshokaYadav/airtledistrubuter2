@@ -20,6 +20,10 @@ const Shops = ({params}) => {
   const [editData, setEditData] = useState(null);
   const {shopid}=React.use(params);
   const user1 = JSON.parse(localStorage.getItem('user'))
+
+  const {transaction}=useSelector(state=>state);
+    console.log(transaction.collectorTransaction?.transaction);
+  
   console.log(user1);
 
   console.log(shopid)
@@ -84,7 +88,7 @@ const Shops = ({params}) => {
       )
      }
 
-      <ShopTable1 onEdit={handleEdit} user1={user1} />
+      <ShopTable1 onEdit={handleEdit} user1={user1} transaction={transaction.collectorTransaction?.transaction} />
       {isModalOpen && (
         <ShopForm
           isOpen={isModalOpen}

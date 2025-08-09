@@ -40,7 +40,7 @@ const TransactionForm = ({ open, handleClose, distributorId }) => {
         //         } else {
         //           dispatch(fetchMasterData(user.id));
         //         }
-      }, 2000);
+      }, 10000);
       
     }
 
@@ -132,7 +132,7 @@ const TransactionForm = ({ open, handleClose, distributorId }) => {
               className="border p-2 w-full rounded-md mb-3"
             >
               <option value="" disabled>Select Reason</option>
-              <option value="Airtel">Airtel Order</option>
+              <option value="Airtel Order">Airtel Order</option>
               <option value="Other">Other Order</option>
             </select>
 

@@ -1,15 +1,24 @@
 // components/MasterTable.js
 import { deletecollectorData, fetchcollectorData } from '@/app/redux/slices/collectorSlice';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import PaymentPopup from './PaymentPopup';
 
 const CollectorTable = ({ onEdit,user1 }) => {
+
+
   const dispatch = useDispatch();
   const { data, status } = useSelector((state) => state.collector);
- const { user, loading, error, token } = useSelector((state) => state.auth);
+  const { user, loading, error, token } = useSelector((state) => state.auth);
+  const { banks } = useSelector((state) => state.banks);
+  const [showPopup, setShowPopup] = useState(false);
+  const [currentItem,setCurrentItem]=useState({});
+
+   
 
  console.log(data.data);
+ console.log(currentItem);
 
 console.log(user);
 
@@ -30,6 +39,11 @@ console.log(user);
   }
 
   return (
+    <>
+    
+
+<PaymentPopup show={showPopup} onClose={() => setShowPopup(false)} currentItem={currentItem}/>
+ 
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border">
         <thead>
@@ -64,6 +78,14 @@ console.log(user);
                     </>
                   )
                 }
+                 <button
+                  onClick={() => {
+                    setCurrentItem(item)
+                    setShowPopup(true)}}
+                className="bg-pink-500 text-white p-2 rounded ml-2"
+               >
+               Deposit
+               </button>
                <Link
                 href={`/collector/${item.id}`}
                 className="bg-blue-500 text-white p-2 rounded ml-2"
@@ -71,7 +93,7 @@ console.log(user);
                View
                </Link>
                <Link
-                href={`/transaction/${item.mobileno}?type=collectortransaction`}
+                href={`/transaction/${item.id}?type=collectortransaction`}
                 className="bg-green-500 text-white p-2 rounded ml-2"
               >
                 View Transaction
@@ -83,6 +105,8 @@ console.log(user);
         </tbody>
       </table>
     </div>
+
+    </>
   );
 };
 

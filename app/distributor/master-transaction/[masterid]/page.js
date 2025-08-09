@@ -3,14 +3,20 @@ import { fetchTransactionsAsync } from "@/app/redux/slices/distributorledger/ord
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { fetchTransactionsAsync } from "../redux/transactionSlice";
+import React from 'react';
 
-const TransactionTable = () => {
+const TransactionTable = ({params}) => {
   const dispatch = useDispatch();
   const { transactions, loading, error } = useSelector((state) => state.mastertransaction);
   console.log(transactions)
 
+   const {masterid}=React.use(params);
+  //  alert(masterid);
+
+   
+
   useEffect(() => {
-    dispatch(fetchTransactionsAsync('2'));
+    dispatch(fetchTransactionsAsync(masterid));
   }, [dispatch]);
 
   return (

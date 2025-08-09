@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 const API_URL = 'https://gsr9qc3n-3012.inc1.devtunnels.ms/api/bank-transaction';
+const TransactionDeleteURl='https://gsr9qc3n-3012.inc1.devtunnels.ms/api/edit-transactions/deletecollector_transaction'
 
 
 // collector/transations/:id
@@ -58,12 +59,12 @@ export const fetchTransactions = createAsyncThunk(
       if (id) {
         // alert(type === 'collectortransaction');
         url = type === 'collectortransaction' 
-          ? `${API_URL}/shops/transactions/byCollectorId/${id}` 
+          ? `${API_URL}/get/transactions/collectortransactions/${id}` 
           : `${API_URL}/get/alltransactionsAShop/${id}`;
       }
 
-      console.log(url);
-      console.log("Fetching transactions from:", url);
+      // console.log(url);
+      // console.log("Fetching transactions from:", url);
       const response = await axios.get(url);
 
       console.log("Fetched transactions:", response);
@@ -86,10 +87,11 @@ export const fetchTransactions = createAsyncThunk(
 //   return response.data.data;
 // });
 export const addTransaction = createAsyncThunk('transaction/addTransaction', async (data) => {
-  alert('heelo khauf')
+  alert('heelo khauf sameer ansari');
   const response = await axios.post(`${API_URL}/createBTCollection/shops`, data);
-  console.log(response.data.data);
-  return response.data.data;
+
+  console.log(response.data);
+  return response.data;
 });
 
 
@@ -101,13 +103,15 @@ export const updateTransaction = createAsyncThunk('transaction/updateTransaction
 
 // Delete transaction
 export const deleteTransaction = createAsyncThunk('transaction/deleteTransaction', async (id) => {
-  await axios.delete(`${API_URL}/${id}`);
+  console.log(id)
+  await axios.post(`${TransactionDeleteURl}`,id);
+  console.log(id);
   return id;
 });
 
 // Upload Excel file
 export const uploadExcelFile = createAsyncThunk('transaction/uploadExcelFile', async (file, { dispatch,rejectWithValue }) => {
-  alert('heelo ')
+  alert('heelo ');
   try {
     const formData = new FormData();
     formData.append('file', file);
@@ -136,11 +140,18 @@ const transactionSlice = createSlice({
   name: 'transaction',
   initialState: {
     transactions: { transactions: [] },
+    collectorTransaction:null,
     status: 'idle',
     uploadStatus: 'idle', // Add uploadStatus for Excel upload
     error: null,
   },
-  reducers: {},
+  reducers: {
+    resetTransactionState: (state) => {
+      state.collectorTransaction = null;
+      // alert('this is crazy')
+    },
+
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchTransactions.pending, (state) => {
@@ -158,6 +169,7 @@ const transactionSlice = createSlice({
       .addCase(addTransaction.fulfilled, (state, action) => {
         console.log(action.payload);
         console.log(state.transactions);
+        state.collectorTransaction=action.payload;
         state.transactions.transactions.push(action.payload);
       })
       .addCase(updateTransaction.fulfilled, (state, action) => {
@@ -167,7 +179,10 @@ const transactionSlice = createSlice({
         }
       })
       .addCase(deleteTransaction.fulfilled, (state, action) => {
-        state.transactions.transactions = state.transactions.transactions.filter((t) => t.id !== action.payload);
+    
+        state.transactions.transactions = state.transactions.transactions.filter((t) => {
+          console.log(action.payload)
+          return t.id !== action.payload?.id});
       })
       // Upload Excel file
       .addCase(uploadExcelFile.pending, (state) => {
@@ -184,5 +199,7 @@ const transactionSlice = createSlice({
       });
   },
 });
+
+export const { resetTransactionState } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

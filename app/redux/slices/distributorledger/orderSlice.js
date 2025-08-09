@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const API_URL = "https://gsr9qc3n-3012.inc1.devtunnels.ms/api/bank-transaction/distributor_transactions_shops/get"; // ✅ API URL daalna
+const API_URL = "https://gsr9qc3n-3012.inc1.devtunnels.ms/api/bank-transaction/get/getAllDistributorTransactions"; // ✅ API URL daalna
 
 // ✅ Fetch Transactions
 export const fetchTransactionsAsync = createAsyncThunk(

@@ -5,13 +5,17 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { deleteTransaction } from '../features/transactionSlice';
 import TransactionForm1 from '../Transaction/TransactionForm1';
+import TransactionPopup from './TransactionPopup';
+import { resetTransactionState } from '../../app/redux/slices/transactionSlice';
 
-const ShopTable1 = ({ onEdit ,user1 }) => {
+
+const ShopTable1 = ({ onEdit ,user1,transaction }) => {
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { shops, status } = useSelector((state) => state.shop);
   const [currentShopId, setCurrentShopId] = useState(null);
   const [currentCollectorId, setCurrentCollectorId] = useState(null);
+  const [popudData,setPopupData]=useState(transaction)
   console.log(shops);
   let navData=[];
   
@@ -37,6 +41,14 @@ const ShopTable1 = ({ onEdit ,user1 }) => {
            currentCollectorId={currentCollectorId}
         />
       )}
+
+
+<TransactionPopup data={popudData} onClose={() =>{
+   setPopupData(null)
+   dispatch(resetTransactionState())
+}} />
+
+
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border">
         <thead>

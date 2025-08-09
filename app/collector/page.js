@@ -5,6 +5,7 @@ import { fetchMasterData } from '../redux/slices/masterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import CollectorTable from '@/components/Collector/CollectorTable';
 import { fetchcollectorData } from '../redux/slices/collectorSlice';
+import { fetchBanks } from '../redux/slices/bankSlice';
 const Home = () => {
   const dispatch = useDispatch();
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -21,6 +22,7 @@ const Home = () => {
   useEffect(() => {
     const user1 = JSON.parse(localStorage.getItem('user'));
     setUser1(user1);
+    dispatch(fetchBanks());
   }, []);
 
   useEffect(() => {

@@ -2,13 +2,17 @@
 import { fetchShopTransactions } from "@/app/redux/slices/distributorledger/shopTransactionSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import React from 'react'
 
-const ShopTransactionTable = () => {
+const ShopTransactionTable = ({params}) => {
   const dispatch = useDispatch();
   const { transactions, loading, error } = useSelector((state) => state.shopTransaction);
 
+    const {collectorId}=React.use(params);
+    // alert(collectorId);
+
   useEffect(() => {
-    dispatch(fetchShopTransactions(2)); // ✅ Shop ID se data fetch
+    dispatch(fetchShopTransactions(collectorId)); // ✅ Shop ID se data fetch
   }, [dispatch]);
 
   return (
